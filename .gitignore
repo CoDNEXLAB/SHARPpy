@@ -33,3 +33,6 @@ pip-log.txt
 # General Files
 __git_version__.py
 .DS_Store
+
+# PID Files
+PIDfiles/*

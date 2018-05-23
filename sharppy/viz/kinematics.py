@@ -83,6 +83,11 @@ class backgroundKinematics(QtGui.QFrame):
         texts = ['SFC-6km', 'SFC-8km','LCL-EL (Cloud Layer)', 'Eff Shear (EBWD)']
         y1 = self.ylast + self.tpad
         for text in texts:
+            if text == 'LCL-EL (Cloud Layer)':
+                pen = QtGui.QPen(QtGui.QColor('#B8860B'), 1, QtCore.Qt.SolidLine)
+            else:
+                pen = QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine)
+            qp.setPen(pen)
             rect = QtCore.QRect(self.lpad, y1, x1, self.label_height)
             qp.drawText(rect, QtCore.Qt.TextDontClip | QtCore.Qt.AlignLeft, text)
             vspace = self.label_height
@@ -107,6 +112,13 @@ class backgroundKinematics(QtGui.QFrame):
         self.barby = y1 + self.tpad
         for text in texts:
             rect = QtCore.QRect(self.lpad, y1, x1, self.label_height)
+            if text == 'Bunkers Right = ':
+                pen = QtGui.QPen(QtGui.QColor('#FF6666'), 1, QtCore.Qt.SolidLine)
+            elif text == 'Bunkers Left = ':
+                pen = QtGui.QPen(QtGui.QColor('#0099CC'), 1, QtCore.Qt.SolidLine)
+            else:
+                pen = QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine)
+            qp.setPen(pen)
             qp.drawText(rect, QtCore.Qt.TextDontClip | QtCore.Qt.AlignLeft, text)
             vspace = self.label_height
             if platform.system() == "Windows":
@@ -249,7 +261,7 @@ class plotKinematics(backgroundKinematics):
         x1 = self.brx / 10
         y1 = self.bry / 19
         origin_x = x1*8.
-        pen = QtGui.QPen(QtGui.QColor('#0A74C6'), 1, QtCore.Qt.SolidLine)
+        pen = QtGui.QPen(QtGui.QColor('#FFFFFF'), 1, QtCore.Qt.SolidLine)
         qp.setPen(pen)
         qp.setFont(self.label_font)
         rect0 = QtCore.QRect(x1*7, self.ylast + self.tpad, x1*2, self.label_height)
@@ -370,8 +382,11 @@ class plotKinematics(backgroundKinematics):
         ## LCL-EL
         texts = [lcl_el, mean_lcl_el, srw_lcl_el]
         count = 5
-        for text in texts:
+        colors =[QtGui.QColor('#FFFFFF'), QtGui.QColor('#B8860B'), QtGui.QColor('#FFFFFF')]
+        for text, color in zip(texts, colors):
             rect = QtCore.QRect(x1*count, y1, x1, self.label_height)
+            pen = QtGui.QPen(color, 1, QtCore.Qt.SolidLine)
+            qp.setPen(pen)
             qp.drawText(rect, QtCore.Qt.TextDontClip | QtCore.Qt.AlignRight, text)
             count += 2
         vspace = self.label_height
@@ -406,7 +421,7 @@ class plotKinematics(backgroundKinematics):
                                             # need the extra pixels on Windows.
         ## bunkers motion
         texts = [bunkers_right, bunkers_left]
-        colors =[QtGui.QColor('#0099CC'), QtGui.QColor('#FF6666')]
+        colors =[QtGui.QColor('#FF6666'), QtGui.QColor('#0099CC')]
         for text, color in zip(texts, colors):
             rect = QtCore.QRect(x1*5, y1, x1, self.label_height)
             pen = QtGui.QPen(color, 1, QtCore.Qt.SolidLine)

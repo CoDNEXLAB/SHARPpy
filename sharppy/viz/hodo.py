@@ -179,8 +179,8 @@ class backgroundHodo(QtGui.QFrame):
 
         '''
         ## initialize a white pen to draw the frame axes
-        pen = QtGui.QPen(QtGui.QColor(WHITE), 2)
-        pen.setStyle(QtCore.Qt.SolidLine)
+        pen = QtGui.QPen(QtGui.QColor('#555555'), 1)
+        pen.setStyle(QtCore.Qt.DashLine)
         qp.setPen(pen)
         ## draw the frame axes
         qp.drawLine(self.centerx, self.tly, self.centerx, self.bry)
@@ -305,6 +305,7 @@ class plotHodo(backgroundHodo):
         self.all_observed = False
 
         self.colors = [
+            QtGui.QColor("#FF00FF"), 
             QtGui.QColor("#FF0000"), 
             QtGui.QColor("#00FF00"), 
             QtGui.QColor("#FFFF00"), 
@@ -312,6 +313,7 @@ class plotHodo(backgroundHodo):
         ]
 
         self.ens_colors = [
+            QtGui.QColor("#880088"), 
             QtGui.QColor("#880000"), 
             QtGui.QColor("#008800"), 
             QtGui.QColor("#888800"), 
@@ -1022,7 +1024,7 @@ class plotHodo(backgroundHodo):
         
         '''
         penwidth = 1
-        pen = QtGui.QPen(QtGui.QColor("#00BFFF"), penwidth)
+        pen = QtGui.QPen(QtGui.QColor("#FFFFFF"), penwidth)
         pen.setStyle(QtCore.Qt.SolidLine)
         qp.setPen(pen)
 
@@ -1061,7 +1063,7 @@ class plotHodo(backgroundHodo):
         qp.drawRect(dn_rect) 
         ## now make the pen white and draw text using
         ## the invisible rectangles
-        pen = QtGui.QPen(QtGui.QColor("#00BFFF"))
+        pen = QtGui.QPen(QtGui.QColor("#FFFFFF"))
         qp.setPen(pen)
         qp.setFont(self.label_font)
         up_stuff = tab.utils.INT2STR(self.upshear[0]) + '/' + tab.utils.INT2STR(self.upshear[1])
@@ -1081,7 +1083,7 @@ class plotHodo(backgroundHodo):
         '''
         ## set a pen with white color, width 1, solid line.
         penwidth = 1
-        pen = QtGui.QPen(QtGui.QColor(WHITE), penwidth)
+        pen = QtGui.QPen(QtGui.QColor("#FF6666"), penwidth)
         pen.setStyle(QtCore.Qt.SolidLine)
         qp.setPen(pen)
         ## check and make sure there is no missing data
@@ -1110,8 +1112,11 @@ class plotHodo(backgroundHodo):
         center_rm = QtCore.QPointF(ruu,rvv)
         center_lm = QtCore.QPointF(luu,lvv)
         ## draw circles around the sorm motion vectors
-        qp.drawEllipse(center_rm, 5, 5)
-        qp.drawEllipse(center_lm, 5, 5)
+        qp.drawEllipse(center_rm, 3, 3)
+        pen = QtGui.QPen(QtGui.QColor("#0099CC"), penwidth)
+        pen.setStyle(QtCore.Qt.SolidLine)
+        qp.setPen(pen)
+        qp.drawEllipse(center_lm, 3, 3)
 
         ## get the effective inflow layer
         ptop, pbottom = self.ptop, self.pbottom
@@ -1148,8 +1153,14 @@ class plotHodo(backgroundHodo):
         qp.setFont(self.label_font)
         rm_stuff = tab.utils.INT2STR(self.bunkers_right_vec[0]) + '/' + tab.utils.INT2STR(self.bunkers_right_vec[1])
         lm_stuff = tab.utils.INT2STR(self.bunkers_left_vec[0]) + '/' + tab.utils.INT2STR(self.bunkers_left_vec[1])
+        pen = QtGui.QPen(QtGui.QColor("#FF6666"))
+        qp.setPen(pen)
+        qp.setFont(self.label_font)
         qp.drawText(rm_rect, QtCore.Qt.AlignCenter, rm_stuff + " RM")
-        qp.drawText(lm_rect, QtCore.Qt.AlignCenter, lm_stuff + " LM")
+        pen = QtGui.QPen(QtGui.QColor("#0099CC"))
+        qp.setPen(pen)
+        qp.setFont(self.label_font)
+        qp.drawText(lm_rect, QtCore.Qt.AlignCenter,lm_stuff + " LM")
 
     def drawCriticalAngle(self, qp):
         '''
@@ -1215,7 +1226,7 @@ class plotHodo(backgroundHodo):
         xx, yy = self.uv_to_pix(u, v)
         ## define the colors for the different hodograph heights
         penwidth = width
-        seg_bnds = [0., 3000., 6000., 9000., 12000.]
+        seg_bnds = [0., 1000., 3000., 6000., 9000., 12000.]
         seg_x = [ tab.interp.generic_interp_hght(bnd, z, xx) for bnd in seg_bnds if bnd <= z.max() ]
         seg_y = [ tab.interp.generic_interp_hght(bnd, z, yy) for bnd in seg_bnds if bnd <= z.max() ]
 
@@ -1234,7 +1245,7 @@ class plotHodo(backgroundHodo):
 
             qp.drawPath(path)
 
-    def draw_profile(self, qp, prof, color="#6666CC", width=2):
+    def draw_profile(self, qp, prof, colors, width=2):
         '''
         Plot the Hodograph.
 
@@ -1263,14 +1274,14 @@ class plotHodo(backgroundHodo):
         qp.setPen(pen)
         qp.setBrush(Qt.NoBrush)
 
-        seg_bnds = [0., 3000., 6000., 9000., 12000.]
+        seg_bnds = [0., 1000., 3000., 6000., 9000., 12000.]
         seg_x = [ tab.interp.generic_interp_hght(bnd, z, xx) for bnd in seg_bnds if bnd <= z.max() ]
         seg_y = [ tab.interp.generic_interp_hght(bnd, z, yy) for bnd in seg_bnds if bnd <= z.max() ]
 
         seg_idxs = np.searchsorted(z, seg_bnds)
         for idx in xrange(len(seg_x) - 1):
             ## define a pen to draw with
-            pen = QtGui.QPen(QtGui.QColor(color), penwidth)
+            pen = QtGui.QPen(colors[idx], penwidth)
             pen.setStyle(QtCore.Qt.SolidLine)
             qp.setPen(pen)
 

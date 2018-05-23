@@ -28,19 +28,33 @@ def drawBarb(qp, origin_x, origin_y, wdir, wspd, color='#FFFFFF'):
     except ValueError:
         return
 
-    if wspd < 1000:
-        color = '#7D1B7E'
-    elif wspd < 100:
-        color = '#4B0082'
-    elif wspd < 75:
-        color = '#FDD017'
-    elif wspd < 50:
-        color = '#B38481'
-    elif wspd < 25:
+    if wspd <= 9999:
+        color = '#FF0000'
+    if wspd <= 60:
+        color = '#FF4000'
+    if wspd <= 55:
+        color = '#FF8000'
+    if wspd <= 50:
+        color = '#FFBF00'
+    if wspd <= 45:
+        color = '#FFFF00'
+    if wspd <= 40:
+        color = '#BFFF00'
+    if wspd <= 35:
+        color = '#80FF00'
+    if wspd <= 30:
+        color = '#40FF00'
+    if wspd <= 25:
         color = '#00FF00'
-    elif wspd < 20:
-        color = '#2B65EC'
-    elif wspd < 10:
+    if wspd <= 20:
+        color = '#00FF40'
+    if wspd <= 15:
+        color = '#00FF80'
+    if wspd <= 10:
+        color = '#00FFBF'
+    if wspd <= 5:
+        color = '#00FFFF'
+    if wspd < 5:
         color = '#FFFFFF'
 
     pen = QtGui.QPen(QtGui.QColor(color), 1, QtCore.Qt.SolidLine)

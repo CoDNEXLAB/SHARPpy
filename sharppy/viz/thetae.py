@@ -279,7 +279,7 @@ class plotThetae(backgroundThetae):
         qp: QtGui.QPainter object
         
         '''
-        pen = QtGui.QPen(QtGui.QColor(RED), 2)
+        pen = QtGui.QPen(QtGui.QColor("#FFFF00"), 2)
         pen.setStyle(QtCore.Qt.SolidLine)
         mask1 = self.thetae.mask
         mask2 = self.pres.mask

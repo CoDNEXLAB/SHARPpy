@@ -49,9 +49,9 @@ class backgroundAnalogues(QtGui.QFrame):
         self.tlx = self.rpad; self.tly = self.tpad
         self.brx = self.wid; self.bry = self.hgt
 
-        fsize1 = np.floor(.09 * self.hgt)
-        fsize2 = np.floor(.07 * self.hgt)
-        fsize3 = np.floor(.06 * self.hgt)
+        fsize1 = np.floor(.07 * self.hgt)
+        fsize2 = np.floor(.06 * self.hgt)
+        fsize3 = np.floor(.05 * self.hgt)
 
         self.tpad = np.floor(.03 * self.hgt)
 
@@ -78,7 +78,7 @@ class backgroundAnalogues(QtGui.QFrame):
             self.title_metrics = QtGui.QFontMetrics( self.title_font )
             self.plot_metrics = QtGui.QFontMetrics( self.plot_font )
             self.match_metrics = QtGui.QFontMetrics( self.match_font )
-		
+        
         self.title_height = self.title_metrics.xHeight() + self.tpad
         self.plot_height = self.plot_metrics.xHeight() + self.tpad
         self.match_height = self.match_metrics.xHeight() + self.tpad
@@ -112,7 +112,7 @@ class backgroundAnalogues(QtGui.QFrame):
         qp.setFont(self.title_font)
         rect0 = QtCore.QRect(0, self.tpad, self.brx, self.title_height)
         qp.drawText(rect0, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter,
-            'SARS - Sounding Analogue System')
+            'SARS - Sounding Analog System')
         self.ylast += (self.title_height + self.tpad)
         
         ## draw some lines to seperate the hail and supercell windows,
@@ -130,7 +130,7 @@ class backgroundAnalogues(QtGui.QFrame):
             
         rect2 = QtCore.QRect(x1*4, self.ylast, x1, self.plot_height)
         qp.drawText(rect2, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter,
-            'SGFNT HAIL')
+            'SEVERE HAIL')
         ## Add to the running sum once more for future text
         self.ylast += (self.title_height)
         ## the hail and supercell windows both need to have a vertical starting reference
@@ -296,7 +296,7 @@ class plotAnalogues(backgroundAnalogues):
         ## if there are no matches, leave the function to prevent crashing
         pen = QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine)
         if self.matches[0] == []:
-            pen.setColor(QtCore.Qt.white)
+            pen.setColor(QtGui.QColor('#FFCC33'))
             qp.setPen(pen)
             qp.setFont(self.match_font)
             ## draw the text 2/5 from the top
@@ -344,7 +344,7 @@ class plotAnalogues(backgroundAnalogues):
             
             ## if there are no quality matches, let the gui know
             if len(self.matches[0]) == 0:
-                pen.setColor(QtCore.Qt.white)
+                pen.setColor(QtGui.QColor('#FFCC33'))
                 qp.setPen(pen)
                 qp.setFont(self.match_font)
                 ## draw the text 2/5 from the top
@@ -372,13 +372,13 @@ class plotAnalogues(backgroundAnalogues):
                     if type == 'TOR':
                         size_str = size[:-3]
                         if size.startswith('SIG'):
-                            pen.setColor(QtGui.QColor(RED))
+                            pen.setColor(QtGui.QColor(MAGENTA))
                             qp.setPen(pen)
                         elif size.startswith('WEAK'):
-                            pen.setColor(QtGui.QColor(LBLUE))
+                            pen.setColor(QtGui.QColor(RED))
                             qp.setPen(pen)
                         elif size.startswith('NON'):
-                            pen.setColor(QtGui.QColor(LBROWN))
+                            pen.setColor(QtGui.QColor(YELLOW))
                             qp.setPen(pen)
                     else:
                         size_str = str( format(size, '.2f' ) )

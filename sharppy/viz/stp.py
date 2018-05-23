@@ -38,7 +38,7 @@ class backgroundSTP(QtGui.QFrame):
         self.brx = self.wid; self.bry = self.hgt
         self.stpmax = 11.; self.stpmin = 0.
 
-        fsize1 = np.floor(.08 * self.hgt)
+        fsize1 = np.floor(.06 * self.hgt)
         fsize2 = np.floor(.05 * self.hgt)
         self.textpad = np.floor(.03 * self.hgt)
 
@@ -58,7 +58,7 @@ class backgroundSTP(QtGui.QFrame):
 
         self.plot_height = self.plot_metrics.xHeight() + self.textpad
         self.box_height = self.box_metrics.xHeight() + self.textpad
-		
+        
         self.plotBitMap = QtGui.QPixmap(self.width()-2, self.height()-2)
         self.plotBitMap.fill(QtCore.Qt.black)
         self.plotBackground()
@@ -98,14 +98,14 @@ class backgroundSTP(QtGui.QFrame):
         qp.setPen(pen)
         spacing = self.bry / 12.
 
-        ytick_fontsize = 10
+        ytick_fontsize = 8
         y_ticks_font = QtGui.QFont('Helvetica', ytick_fontsize)
         qp.setFont(y_ticks_font)
         stp_inset_data = inset_data.stpData()
         texts = stp_inset_data['stp_ytexts']
         y_ticks = np.arange(self.tpad, self.bry+spacing, spacing)
         for i in xrange(len(y_ticks)):
-            pen = QtGui.QPen(QtGui.QColor("#0080FF"), 1, QtCore.Qt.DashLine)
+            pen = QtGui.QPen(QtGui.QColor("#3B3131"), 1, QtCore.Qt.DashLine)
             qp.setPen(pen)
             qp.drawLine(self.tlx, y_ticks[i], self.brx, y_ticks[i])
             color = QtGui.QColor('#000000')
@@ -124,9 +124,10 @@ class backgroundSTP(QtGui.QFrame):
         texts = stp_inset_data['stp_xtexts']
         ef = self.stp_to_pix(ef)
         qp.setFont(QtGui.QFont('Helvetica', 8))
+        color_idx=[QtGui.QColor('#FF00FF'),QtGui.QColor('#FF0000'),QtGui.QColor('#F88017'),QtGui.QColor('#FFFF00'),QtGui.QColor('#FFFF00'),QtGui.QColor('#00FF00')]
         for i in xrange(ef.shape[0]):
             # Set green pen to draw box and whisker plots 
-            pen = QtGui.QPen(QtCore.Qt.green, 2, QtCore.Qt.SolidLine)
+            pen = QtGui.QPen(color_idx[i], 2, QtCore.Qt.SolidLine)
             qp.setPen(pen)
             # Draw lower whisker
             qp.drawLine(center[i], ef[i,0], center[i], ef[i,1])
@@ -189,151 +190,151 @@ class plotSTP(backgroundSTP):
     def cape_prob(self, cape):
         if cape == 0.:
             prob = 0.00
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(WHITE)
         elif cape  > 0. and cape < 250.:
             prob = .12
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(WHITE)
         elif cape >= 250. and cape < 500.:
             prob = .14
-            color = QtGui.QColor(WHITE)
+            color = QtGui.QColor(GREEN)
         elif cape >= 500. and cape < 1000.:
             prob = .16
-            color = QtGui.QColor(WHITE)
+            color = QtGui.QColor(GREEN)
         elif cape >= 1000. and cape < 1500.:
-            prob = .15
-            color = QtGui.QColor(WHITE)
-        elif cape >= 1500. and cape < 2000.:
-            prob = .13
-            color = QtGui.QColor(WHITE)
-        elif cape >= 2000. and cape < 2500.:
-            prob = .14
-            color = QtGui.QColor(WHITE)
-        elif cape >= 2500. and cape < 3000.:
             prob = .18
             color = QtGui.QColor(YELLOW)
-        elif cape >= 3000. and cape < 4000.:
+        elif cape >= 1500. and cape < 2000.:
             prob = .20
             color = QtGui.QColor(YELLOW)
+        elif cape >= 2000. and cape < 2500.:
+            prob = .22
+            color = QtGui.QColor(ORANGE)
+        elif cape >= 2500. and cape < 3000.:
+            prob = .24
+            color = QtGui.QColor(RED)
+        elif cape >= 3000. and cape < 4000.:
+            prob = .26
+            color = QtGui.QColor(RED)
         elif cape >= 4000.:
-            prob = .16
-            color = QtGui.QColor(WHITE)
+            prob = .28
+            color = QtGui.QColor(MAGENTA)
         else:
             prob = np.ma.masked
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         return prob, color
     
     def lcl_prob(self, lcl):
         if lcl < 750.:
-            prob = .19
-            color = QtGui.QColor(YELLOW)
+            prob = .21
+            color = QtGui.QColor(MAGENTA)
         elif lcl >= 750. and lcl < 1000.:
             prob = .19
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(RED)
         elif lcl >= 1000. and lcl < 1250.:
             prob = .15
-            color = QtGui.QColor(WHITE)
+            color = QtGui.QColor(ORANGE)
         elif lcl >= 1250. and lcl < 1500.:
             prob = .10
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(YELLOW)
         elif lcl >= 1500. and lcl < 1750:
             prob = .06
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(GREEN)
         elif lcl >= 1750. and lcl < 2000.:
-            prob = .06
-            color = QtGui.QColor(DBROWN)
+            prob = .03
+            color = QtGui.QColor(WHITE)
         elif lcl >= 2000. and lcl < 2500.:
             prob = .02
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         elif lcl >= 2500:
             prob = 0.0
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         else:
             prob = np.ma.masked
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         return prob, color
     
     def esrh_prob(self, esrh):
         if esrh < 50.:
             prob = .06
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         elif esrh >= 50. and esrh < 100.:
             prob = .06
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(GREEN)
         elif esrh >= 100. and esrh < 200.:
             prob = .08
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(YELLOW)
         elif esrh >= 200. and esrh < 300:
             prob = .14
-            color = QtGui.QColor(WHITE)
+            color = QtGui.QColor(ORANGE)
         elif esrh >= 300. and esrh < 400.:
             prob = .20
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(RED)
         elif esrh >= 400. and esrh < 500.:
             prob = .27
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(RED)
         elif esrh >= 500. and esrh < 600:
             prob = .38
-            color = QtGui.QColor(RED)
+            color = QtGui.QColor(MAGENTA)
         elif esrh >= 600. and esrh < 700.:
             prob = .37
-            color = QtGui.QColor(RED)
+            color = QtGui.QColor(MAGENTA)
         elif esrh >= 700:
             prob = .42
-            color = QtGui.QColor(RED)
+            color = QtGui.QColor(MAGENTA)
         else:
             prob = np.ma.masked
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         return prob, color
     
     def ebwd_prob(self, ebwd):
         if ebwd == 0.:
             prob = 0.0
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         elif ebwd >= .01 and ebwd < 20.:
             prob = .03
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(GREEN)
         elif ebwd >= 20. and ebwd < 30.:
             prob = .05
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(YELLOW)
         elif ebwd >= 30. and ebwd < 40.:
             prob = .06
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(ORANGE)
         elif ebwd >= 40. and ebwd < 50.:
             prob = .12
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(RED)
         elif ebwd >= 50. and ebwd < 60.:
             prob = .19
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(RED)
         elif ebwd >= 60. and ebwd < 70.:
             prob = .27
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(MAGENTA)
         elif ebwd >= 70. and ebwd < 80.:
             prob = .36
-            color = QtGui.QColor(RED)
+            color = QtGui.QColor(MAGENTA)
         elif ebwd >= 80.:
-            prob = .26
-            color = QtGui.QColor(YELLOW)
+            prob = .38
+            color = QtGui.QColor(MAGENTA)
         else:
             prob = np.ma.masked
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         return prob, color
 
     def stpc_prob(self, stpc):
         if stpc < .1:
             prob = .06
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         elif stpc >= .1 and stpc < .50:
             prob = .08
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(GREEN)
         elif stpc >= .5 and stpc < 1.0:
             prob = .12
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(GREEN)
         elif stpc >= 1. and stpc < 2.:
             prob = .17
-            color = QtGui.QColor(WHITE)
+            color = QtGui.QColor(YELLOW)
         elif stpc >= 2. and stpc < 4.:
             prob = .25
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(ORANGE)
         elif stpc >= 4. and stpc < 6.:
             prob = .32
             color = QtGui.QColor(RED)
@@ -348,28 +349,28 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(MAGENTA)
         else:
             prob = np.ma.masked
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         return prob, color
 
     def stpf_prob(self, stpf):
         if stpf < .1:
             prob = .05
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         elif stpf >= .1 and stpf < .5:
             prob = .06
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(GREEN)
         elif stpf >= .5 and stpf < 1.:
             prob = .11
-            color = QtGui.QColor(LBROWN)
+            color = QtGui.QColor(GREEN)
         elif stpf >= 1. and stpf < 2.:
             prob = .17
-            color = QtGui.QColor(WHITE)
+            color = QtGui.QColor(YELLOW)
         elif stpf >= 2. and stpf < 3.:
             prob = .25
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(ORANGE)
         elif stpf >= 3. and stpf < 5.:
             prob = .25
-            color = QtGui.QColor(YELLOW)
+            color = QtGui.QColor(RED)
         elif stpf >= 5. and stpf < 7.:
             prob = .39
             color = QtGui.QColor(RED)
@@ -381,7 +382,7 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(MAGENTA)
         else:
             prob = np.ma.masked
-            color = QtGui.QColor(DBROWN)
+            color = QtGui.QColor(WHITE)
         return prob, color
 
 
@@ -434,7 +435,7 @@ class plotSTP(backgroundSTP):
             self.stpc = 11.
         prob, color = self.stpc_prob(self.stpc) 
         ef = self.stp_to_pix(self.stpc)
-        pen = QtGui.QPen(color, 1.5, QtCore.Qt.SolidLine)
+        pen = QtGui.QPen(QtGui.QColor('#00FFFF'), 1.5, QtCore.Qt.SolidLine)
         qp.setPen(pen)
         qp.drawLine(0, ef, self.wid, ef)
         qp.end()
@@ -448,7 +449,7 @@ class plotSTP(backgroundSTP):
         vspace = self.box_height + 1
         if platform.system() == "Windows":
             vspace += self.box_metrics.descent()
-        bot_y = top_y + vspace * 8
+        bot_y = top_y + vspace * 7
         ## fill the box with a black background
         brush = QtGui.QBrush(QtCore.Qt.SolidPattern)
         pen = QtGui.QPen(QtCore.Qt.black, 0, QtCore.Qt.SolidLine)
@@ -472,7 +473,7 @@ class plotSTP(backgroundSTP):
         x1 = left_x+3
         x2 = x1 + (width * .75)
         ## start with the header/title
-        texts = ['Prob EF2+ torn with supercell', 'Sample CLIMO = .15 sigtor']
+        texts = ['Prob EF2+ Given Supercell']
         for text in texts:
             rect = QtCore.QRectF(x1, y1, width, self.box_height)
             qp.drawText(rect, QtCore.Qt.TextDontClip | QtCore.Qt.AlignLeft, text)

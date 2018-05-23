@@ -59,7 +59,10 @@ class SPCWidget(QWidget):
         self.mode = ""
 
         ## these are used to display profiles
-        self.parcel_type = "MU"
+        if not self.config.has_section('parcel_plot'):
+            self.config.add_section('parcel_plot')
+            self.config.set('parcel_plot','pcl_plot','MU')
+        self.parcel_type = self.config.get('parcel_plot','pcl_plot')
 
         self.coll_observed = False
 
@@ -121,15 +124,15 @@ class SPCWidget(QWidget):
                          "  border-color: rgb(255, 255, 255);"
                          "  margin: 0px;}")
 
-        self.brand = QLabel("College of DuPage Soundings powered by SHARPpy")
+        self.brand = QLabel("College of DuPage NEXLAB powered via SHARPpy | weather.cod.edu")
         self.brand.setAlignment(Qt.AlignRight)
         self.brand.setStyleSheet("QFrame {"
                              "  background-color: rgb(0, 0, 0);"
                              "  text-align: right;"
                              "  padding-top: 4px;"
                              "  padding-bottom: 4px;"
-                             "  font-size: 11px;"
-                             "  color: #FFFFFF;}")
+                             "  font-size: 12px;"
+                             "  color: #FFFF00;}")
 
         ## this layout manager will handle the upper right portion of the window
         self.grid2 = QGridLayout()
@@ -225,7 +228,7 @@ class SPCWidget(QWidget):
         self.thetae_vs_pressure = plotThetae()
         self.srwinds_vs_height = plotWinds()
         self.watch_type = plotWatch()
-        self.convective = plotText(self.parcel_types)
+        self.convective = plotText(self.parcel_types, self.parcel_type)
         self.kinematic = plotKinematics()
 
         # intialize swappable insets

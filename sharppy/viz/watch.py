@@ -32,7 +32,7 @@ class backgroundWatch(QtGui.QFrame):
             fsize = 10
         else:
             fsize = 12
-        self.title_font = QtGui.QFont('Helvetica', fsize)
+        self.title_font = QtGui.QFont('Helvetica', 8)
         self.plot_font = QtGui.QFont('Helvetica', fsize)
         self.title_metrics = QtGui.QFontMetrics( self.title_font )
         self.plot_metrics = QtGui.QFontMetrics( self.plot_font )
@@ -67,7 +67,7 @@ class backgroundWatch(QtGui.QFrame):
         y1 = self.bry / 13.
         pad = self.bry / 100.
         rect0 = QtCore.QRect(0, pad*4, self.brx, self.title_height)
-        qp.drawText(rect0, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'Psbl Haz. Type')
+        qp.drawText(rect0, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'Potential Hazard Type')
         pen = QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine)
         qp.setPen(pen)
         qp.drawLine(0, pad*4 + (self.title_height + 3), self.brx, pad*4 + (self.title_height + 3))

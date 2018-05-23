@@ -62,7 +62,7 @@ class backgroundWinter(QtGui.QFrame):
         y1 = self.ylast + self.tpad
         ## draw the header
         rect1 = QtCore.QRect(0, self.tpad, self.wid, self.label_height)
-        qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, '*** DENDRITIC GROWTH ZONE (-12 TO -17 C) ***')
+        qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'DENDRITIC GROWTH ZONE (-12 TO -17 C) STATISTICS')
         self.oprh_y1 = 2*self.label_height+self.tpad
         pen = QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine)
         qp.setPen(pen)
@@ -113,9 +113,9 @@ class backgroundWinter(QtGui.QFrame):
             y1 += self.label_height + sep + self.os_mod
 
         self.energy_y1 = backup
-        qp.drawLine( 0, y1 + 0, self.brx, y1 + 0)
-        qp.drawLine( self.brx* .48, y1 + 0, self.brx*.48, backup )
-        y1 += 4
+        qp.drawLine( 0, y1 + 6, self.brx, y1 + 6)
+        qp.drawLine( self.brx* .48, y1 + 6, self.brx*.48, backup )
+        y1 = y1 + 10
         rect1 = QtCore.QRect(0, y1, self.wid, self.label_height)
         qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, '*** BEST GUESS PRECIP TYPE ***')
         self.precip_type_y1 = y1 + self.label_height + 3 + 2 * self.os_mod
@@ -251,16 +251,33 @@ class plotWinter(backgroundWinter):
         qp.setPen(pen)
         qp.setFont(self.label_font)
         rect1 = QtCore.QRect(0, self.oprh_y1, self.wid, self.label_height)
-        if self.dgz_meanomeg == -99990.0:
-            qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'OPRH (Omega*PW*RH): N/A')
-        else:
-            qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'OPRH (Omega*PW*RH): ' + tab.utils.FLOAT2STR(self.oprh,2))
+        # if self.dgz_meanomeg == -99990.0:
+        #     qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'OPRH (Omega*PW*RH): N/A')
+        # else:
+        #     qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignCenter, 'OPRH (Omega*PW*RH): ' + tab.utils.FLOAT2STR(self.oprh,2))
 
     def drawPrecipType(self, qp):
         big = QtGui.QFont('Helvetica', 15, bold=True)
         big_metrics = QtGui.QFontMetrics( big )
         height = big_metrics.xHeight() + self.tpad
-        pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.SolidLine)
+        if self.precip_type == 'None':
+            pen = QtGui.QPen(QtCore.Qt.lightGray, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Rain':
+            pen = QtGui.QPen(QtCore.Qt.green, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Snow':
+            pen = QtGui.QPen(QtCore.Qt.cyan, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Sleet':
+            pen = QtGui.QPen(QtCore.Qt.yellow, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Sleet and Snow':
+            pen = QtGui.QPen(QtCore.Qt.orange, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Freezing Rain/Drizzle':
+            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Freezing Rain':
+            pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.SolidLine)
+        elif self.precip_type == 'Unknown':
+            pen = QtGui.QPen(QtCore.Qt.sienna, 2, QtCore.Qt.SolidLine)
+        else:
+            pen = QtGui.QPen(QtCore.Qt.white, 2, QtCore.Qt.SolidLine)
         qp.setPen(pen)
         qp.setFont(big)
         rect1 = QtCore.QRect(0, self.precip_type_y1, self.wid, height)
@@ -315,15 +332,19 @@ class plotWinter(backgroundWinter):
     def drawDGZLayer(self, qp):
         pen = QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine)
         qp.setPen(pen)
-        qp.setFont(self.label_font)
+        big1 = QtGui.QFont('Helvetica', 8, bold=True)
+        qp.setFont(big1)
         sep = 5
         y1 = self.layers_y1
+        colors = [QtGui.QColor('#FFCC33'),QtCore.Qt.white,QtCore.Qt.white]
         label = ['Layer Depth: ' + tab.utils.INT2STR(self.dgz_depth) + " ft (" + tab.utils.INT2STR(self.dgz_zbot) + '-' +\
                  tab.utils.INT2STR(self.dgz_ztop) + ' ft msl)',\
                  'Mean Layer RH: ' + tab.utils.FLOAT2STR(self.dgz_meanrh,0) + ' %',\
                  'Mean Layer PW: ' + tab.utils.FLOAT2STR(self.dgz_pw,1) + ' in']
-        for i in label:
+        for i,c in zip(label,colors):
             rect1 = QtCore.QRect(self.lpad, y1, self.wid/10, self.label_height)
+            pen = QtGui.QPen(c, 1, QtCore.Qt.SolidLine)
+            qp.setPen(pen)
             qp.drawText(rect1, QtCore.Qt.TextDontClip | QtCore.Qt.AlignLeft, i)
             y1 += self.label_height + sep + self.os_mod
 
