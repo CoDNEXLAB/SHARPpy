@@ -121,7 +121,7 @@ class SPCWidget(QWidget):
                          "  border-color: rgb(255, 255, 255);"
                          "  margin: 0px;}")
 
-        self.brand = QLabel("SHARPpy Beta v%s %s" % (__version__, __version_name__))
+        self.brand = QLabel("College of DuPage Soundings powered by SHARPpy")
         self.brand.setAlignment(Qt.AlignRight)
         self.brand.setStyleSheet("QFrame {"
                              "  background-color: rgb(0, 0, 0);"

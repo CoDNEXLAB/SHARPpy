@@ -51,7 +51,7 @@ class backgroundSkewT(QtGui.QWidget):
         self.title_metrics = QtGui.QFontMetrics( self.title_font )
         self.title_height = self.title_metrics.xHeight() + 5
         self.label_font = QtGui.QFont('Helvetica', fsize + 2)
-        self.environment_trace_font = QtGui.QFont('Helvetica', 11)
+        self.environment_trace_font = QtGui.QFont('Helvetica', 7)
         self.in_plot_font = QtGui.QFont('Helvetica', fsize)
         self.esrh_font = QtGui.QFont('Helvetica', fsize + 2)
         self.esrh_metrics = QtGui.QFontMetrics( self.esrh_font )
@@ -246,9 +246,9 @@ class backgroundSkewT(QtGui.QWidget):
         y1 = self.originy + self.bry / self.scale
         y2 = self.originy + self.tpad / self.scale
         if int(t) in [0, -20]:
-            pen = QtGui.QPen(QtGui.QColor("#0000FF"), 1)
+            pen = QtGui.QPen(QtGui.QColor("#459ff9"), 1)
         else:
-            pen = QtGui.QPen(QtGui.QColor("#555555"), 1)
+            pen = QtGui.QPen(QtGui.QColor("#999999"), 1)
         pen.setStyle(QtCore.Qt.CustomDashLine)
         pen.setDashPattern([4, 2])
         qp.setPen(pen)
@@ -467,7 +467,7 @@ class plotSkewT(backgroundSkewT):
         model = prof_coll.getMeta('model')
         observed = prof_coll.getMeta('observed')
 
-        plot_title = loc + '   ' + datetime.strftime(date, "%Y%m%d/%H%M")
+        plot_title = model + ' Sounding for '+ loc + ' Valid  ' + datetime.strftime(date, "%a %d %b %Y | %H%M UTC")
         if model == "Archive":
             fhour_str = ""
             if not prof_coll.getMeta('observed'):
@@ -478,8 +478,13 @@ class plotSkewT(backgroundSkewT):
             date = prof_coll.getAnalogDate()
             plot_title = loc + '   ' + datetime.strftime(date, "%Y%m%d/%H%M")
             plot_title += "  (Analog" + modified_str + ")"
+        elif "Observed" in model:
+            # Change title for observed soundings
+            plot_title = 'Observed Sounding for ' + loc + '  -  ' + datetime.strftime(date, "%a %d %b %Y | %H%M UTC")
         elif observed:
-            plot_title += "  (Observed" + modified_str + ")"
+            # Ignore this, does not apply to us
+            # plot_title += "  (Observed" + modified_str + ")"
+            pass
         else:
             fhour = int(total_seconds(date - prof_coll.getMeta('base_time')) / 3600)
             plot_title += "  (" + run + "  " + model + "  " + ("F%03d" % fhour) + modified_str + ")"
@@ -513,7 +518,7 @@ class plotSkewT(backgroundSkewT):
     def setActiveCollection(self, pc_idx, **kwargs):
         self.pc_idx = pc_idx
         prof = self.prof_collections[pc_idx].getHighlightedProf()
-        self.plot_omega = not self.prof_collections[pc_idx].getMeta('observed')
+        self.plot_omega = True
         self.prof = prof
 
         self.pres = prof.pres; self.hght = prof.hght
@@ -884,7 +889,7 @@ class plotSkewT(backgroundSkewT):
 
         qp.end()
 
-    def drawBarbs(self, prof, qp, color="#FFFFFF"):
+    def drawBarbs(self, prof, qp, color="#E5E4E2"):
         qp.setClipping(False)
 
         rect_size = self.clip.size()
@@ -1115,7 +1120,7 @@ class plotSkewT(backgroundSkewT):
            #     QtCore.Qt.AlignVCenter | QtCore.Qt.AlignRight,
            #     text_bot)
     
-    def drawVirtualParcelTrace(self, ttrace, ptrace, qp, width=1, color="#FFFFFF"):
+    def drawVirtualParcelTrace(self, ttrace, ptrace, qp, width=1, color="#FFFF00"):
         '''
         Draw a parcel trace.
         '''

@@ -379,37 +379,37 @@ def best_guess_precip(prof, init_phase, init_lvl, init_temp, tpos, tneg):
 
     # Case: No precip
     if init_phase < 0:
-        precip_type = "None."
+        precip_type = "None"
 
     # Case: Always too warm - Rain
     elif init_phase == 0 and tneg >=0 and prof.tmpc[prof.get_sfc()] > 0:
-        precip_type = "Rain."
+        precip_type = "Rain"
 
     # Case: always too cold
     elif init_phase == 3 and tpos <= 0 and prof.tmpc[prof.get_sfc()] <= 0:
-        precip_type = "Snow."
+        precip_type = "Snow"
 
     # Case: ZR too warm at sfc - Rain
     elif init_phase == 1 and tpos <= 0 and prof.tmpc[prof.get_sfc()] > 0:
-        precip_type = "Rain."
+        precip_type = "Rain"
 
     # Case: non-snow init...always too cold - Initphase & sleet
     elif init_phase == 1 and tpos <= 0 and prof.tmpc[prof.get_sfc()] <= 0:
         #print interp.to_agl(prof, interp.hght(prof, init_lvl))
         if interp.to_agl(prof, interp.hght(prof, init_lvl)) >= 3000:
             if init_temp <= -4:
-                precip_type = "Sleet and Snow."
+                precip_type = "Sleet and Snow"
             else:
-                precip_type = "Sleet."
+                precip_type = "Sleet"
         else:
-            precip_type = "Freezing Rain/Drizzle."
+            precip_type = "Freezing Rain/Drizzle"
 
     # Case: Snow...but warm at sfc
     elif init_phase == 3 and tpos <= 0 and prof.tmpc[prof.get_sfc()] > 0:
         if prof.tmpc[prof.get_sfc()] > 4:
-            precip_type = "Rain."
+            precip_type = "Rain"
         else:
-            precip_type = "Snow."
+            precip_type = "Snow"
    
     # Case: Warm layer.
     elif tpos > 0:
@@ -417,14 +417,14 @@ def best_guess_precip(prof, init_phase, init_lvl, init_temp, tpos, tneg):
         y1 = -tneg
         y2 = (0.62 * x1) + 60.0
         if y1 > y2:
-            precip_type = "Sleet."
+            precip_type = "Sleet"
         else:
             if prof.tmpc[prof.get_sfc()] <= 0:
-                precip_type = "Freezing Rain."
+                precip_type = "Freezing Rain"
             else:
-                precip_type = "Rain."
+                precip_type = "Rain"
     else:
-        precip_type = "Unknown."
+        precip_type = "Unknown"
 
     return precip_type
 
@@ -519,40 +519,40 @@ def possible_watch(prof):
     if stp_eff >= 3 and stp_fixed >= 3 and srh1km >= 200 and right_esrh >= 200 and srw_4_6km >= 15.0 and \
         sfc_8km_shear > 45.0 and prof.sfcpcl.lclhght < 1000. and prof.mlpcl.lclhght < 1200 and lr1 >= 5.0 and \
         prof.mlpcl.bminus > -50 and prof.ebotm == 0:
-        watch_types.append("PDS TOR")
+        watch_types.append("PDS\nTORNADO")
         colors.append(constants.MAGENTA)
     elif (stp_eff >= 3 or stp_fixed >= 4) and prof.mlpcl.bminus > -125. and prof.ebotm == 0:
-        watch_types.append("TOR")
+        watch_types.append("TORNADO")
         colors.append("#FF0000")
     elif (stp_eff >= 1 or stp_fixed >= 1) and (srw_4_6km >= 15.0 or sfc_8km_shear >= 40) and \
         prof.mlpcl.bminus > -50 and prof.ebotm == 0:
-        watch_types.append("TOR")
+        watch_types.append("TORNADO")
         colors.append("#FF0000")
     elif (stp_eff >= 1 or stp_fixed >= 1) and ((prof.low_rh + prof.mid_rh)/2. >= 60) and lr1 >= 5.0 and \
         prof.mlpcl.bminus > -50 and prof.ebotm == 0:
-        watch_types.append("TOR")
+        watch_types.append("TORNADO")
         colors.append("#FF0000")
     elif (stp_eff >= 1 or stp_fixed >= 1) and prof.mlpcl.bminus > -150 and prof.ebotm == 0.:
-        watch_types.append("MRGL TOR")
+        watch_types.append("WEAK\nTORNADO")
         colors.append("#FF0000")
     elif (stp_eff >= 0.5 and prof.right_esrh >= 150) or (stp_fixed >= 0.5 and srh1km >= 150) and \
         prof.mlpcl.bminus > -50 and prof.ebotm == 0.:
-        watch_types.append("MRGL TOR")
+        watch_types.append("WEAK\nTORNADO")
         colors.append("#FF0000")
 
     #SVR LOGIC
     if (stp_fixed >= 1.0 or prof.right_scp >= 4.0 or stp_eff >= 1.0) and prof.mupcl.bminus >= -50:
         colors.append("#FFFF00")
-        watch_types.append("SVR")
+        watch_types.append("SEVERE")
     elif prof.right_scp >= 2.0 and (prof.ship >= 1.0 or prof.dcape >= 750) and prof.mupcl.bminus >= -50:
         colors.append("#FFFF00")
-        watch_types.append("SVR")
+        watch_types.append("SEVERE")
     elif prof.sig_severe >= 30000 and prof.mmp >= 0.6 and prof.mupcl.bminus >= -50:
         colors.append("#FFFF00")
-        watch_types.append("SVR")
+        watch_types.append("SEVERE")
     elif prof.mupcl.bminus >= -75.0 and (prof.wndg >= 0.5 or prof.ship >= 0.5 or prof.right_scp >= 0.5):
         colors.append("#0099CC")
-        watch_types.append("MRGL SVR")
+        watch_types.append("MARGINAL\nSEVERE")
     
     # Flash Flood Watch PWV is larger than normal and cloud layer mean wind speeds are slow
     # This is trying to capture the ingredients of moisture and advection speed, but cannot
@@ -561,7 +561,7 @@ def possible_watch(prof):
     pwat = prof.pwat
     upshear = utils.comp2vec(prof.upshear_downshear[0],prof.upshear_downshear[1])
     if pw_climo_flag >= 2 and upshear[1] < 25:
-        watch_types.append("FLASH FLOOD")
+        watch_types.append("FLASH\nFLOOD")
         colors.append("#5FFB17")
     #elif pwat > 1.3 and upshear[1] < 25:
     #    watch_types.append("FLASH FLOOD")
@@ -576,17 +576,17 @@ def possible_watch(prof):
     
     # Wind Chill (if wind chill gets below -20 F)
     if wind_chill(prof) < -20.:
-        watch_types.append("WIND CHILL")
+        watch_types.append("WIND\nCHILL")
         colors.append("#3366FF")
     
     # Fire WX (sfc RH < 30% and sfc_wind speed > 15 mph) (needs to be updated to include SPC Fire Wx Indices)
     if sfc_wspd > 15. and thermo.relh(prof.pres[prof.get_sfc()], prof.tmpc[prof.get_sfc()], prof.dwpc[prof.get_sfc()]) < 30. :
-        watch_types.append("FIRE WEATHER")
+        watch_types.append("FIRE\nWEATHER")
         colors.append("#FF9900")
     
     # Excessive Heat (if Max_temp > 105 F and sfc dewpoint > 75 F)
     if thermo.ctof(prof.dwpc[prof.get_sfc()]) > 75. and thermo.ctof(params.max_temp(prof)) >= 105.:
-        watch_types.append("EXCESSIVE HEAT")
+        watch_types.append("EXCESSIVE\nHEAT")
         colors.append("#CC33CC")
     
     # Freeze (checks to see if wetbulb is below freezing and temperature isn't and wind speeds are low)

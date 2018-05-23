@@ -33,11 +33,20 @@ classifiers = ["Development Status :: 4 - Beta"]
 HOME_PATH = os.path.join(os.path.expanduser("~"), ".sharppy")
 HOME_DSDIR = os.path.join(HOME_PATH, "datasources")
 SRC_DSDIR = os.path.join(os.path.dirname(__file__), "datasources")
+HOME_DCDIR = os.path.join(HOME_PATH, "decoders")
+SRC_DCDIR = os.path.join(os.path.dirname(__file__), "decoders")
+SRC_GSDIR = os.path.join(os.path.dirname(__file__), "guisettings")
 
 ## if the settings directory does not exist, create it and copy the necessary resources
 if not os.path.exists(HOME_PATH):
     os.makedirs(HOME_PATH)
     shutil.copytree(SRC_DSDIR, HOME_DSDIR)
+    shutil.copytree(SRC_DCDIR, HOME_DCDIR)
+
+## copy over gui settings .ini files
+gsINIs = glob.glob(os.path.join(SRC_GSDIR, "*.ini"))
+for ini in gsINIs:
+    shutil.copy(ini, os.path.join(HOME_PATH, os.path.basename(ini)))
 
 ## if a datasource XML file exits, we don't want to overwrite it, so copy it to a different file first
 if os.path.exists(os.path.join(HOME_DSDIR, "standard.xml")):

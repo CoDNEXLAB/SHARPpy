@@ -260,7 +260,7 @@ class plotWinter(backgroundWinter):
         big = QtGui.QFont('Helvetica', 15, bold=True)
         big_metrics = QtGui.QFontMetrics( big )
         height = big_metrics.xHeight() + self.tpad
-        pen = QtGui.QPen(QtCore.Qt.white, 2, QtCore.Qt.SolidLine)
+        pen = QtGui.QPen(QtCore.Qt.red, 2, QtCore.Qt.SolidLine)
         qp.setPen(pen)
         qp.setFont(big)
         rect1 = QtCore.QRect(0, self.precip_type_y1, self.wid, height)

@@ -23,14 +23,29 @@ def drawHalfBarb(path):
     path.moveTo(pos.x() - 4, pos.y())
 
 def drawBarb(qp, origin_x, origin_y, wdir, wspd, color='#FFFFFF'):
-    pen = QtGui.QPen(QtGui.QColor(color), 1, QtCore.Qt.SolidLine)
-    pen.setWidthF(1.)
-    qp.setPen(pen)
-
     try:
         wspd = int(round(wspd / 5.) * 5) # Round to the nearest 5
     except ValueError:
         return
+
+    if wspd < 1000:
+        color = '#7D1B7E'
+    elif wspd < 100:
+        color = '#4B0082'
+    elif wspd < 75:
+        color = '#FDD017'
+    elif wspd < 50:
+        color = '#B38481'
+    elif wspd < 25:
+        color = '#00FF00'
+    elif wspd < 20:
+        color = '#2B65EC'
+    elif wspd < 10:
+        color = '#FFFFFF'
+
+    pen = QtGui.QPen(QtGui.QColor(color), 1, QtCore.Qt.SolidLine)
+    pen.setWidthF(1.)
+    qp.setPen(pen)
 
     qp.translate(origin_x, origin_y)
 
