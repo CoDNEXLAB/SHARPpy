@@ -10,7 +10,7 @@ import imp
 import sharppy.io.decoder as decoder
 import utils.frozenutils as frozenutils
 
-HOME_DIR = os.path.join(os.path.expanduser("~"), ".sharppy", "datasources")
+HOME_DIR = "/home/ldm/.sharppy/datasources"
 
 if frozenutils.isFrozen():
     import available
