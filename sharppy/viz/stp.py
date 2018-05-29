@@ -196,10 +196,10 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(WHITE)
         elif cape >= 250. and cape < 500.:
             prob = .14
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif cape >= 500. and cape < 1000.:
             prob = .16
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif cape >= 1000. and cape < 1500.:
             prob = .18
             color = QtGui.QColor(YELLOW)
@@ -238,7 +238,7 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(YELLOW)
         elif lcl >= 1500. and lcl < 1750:
             prob = .06
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif lcl >= 1750. and lcl < 2000.:
             prob = .03
             color = QtGui.QColor(WHITE)
@@ -259,7 +259,7 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(WHITE)
         elif esrh >= 50. and esrh < 100.:
             prob = .06
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif esrh >= 100. and esrh < 200.:
             prob = .08
             color = QtGui.QColor(YELLOW)
@@ -292,7 +292,7 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(WHITE)
         elif ebwd >= .01 and ebwd < 20.:
             prob = .03
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif ebwd >= 20. and ebwd < 30.:
             prob = .05
             color = QtGui.QColor(YELLOW)
@@ -325,10 +325,10 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(WHITE)
         elif stpc >= .1 and stpc < .50:
             prob = .08
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif stpc >= .5 and stpc < 1.0:
             prob = .12
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif stpc >= 1. and stpc < 2.:
             prob = .17
             color = QtGui.QColor(YELLOW)
@@ -358,10 +358,10 @@ class plotSTP(backgroundSTP):
             color = QtGui.QColor(WHITE)
         elif stpf >= .1 and stpf < .5:
             prob = .06
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif stpf >= .5 and stpf < 1.:
             prob = .11
-            color = QtGui.QColor(GREEN)
+            color = QtGui.QColor('#00FF00')
         elif stpf >= 1. and stpf < 2.:
             prob = .17
             color = QtGui.QColor(YELLOW)
