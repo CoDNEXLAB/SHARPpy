@@ -36,3 +36,6 @@ __git_version__.py
 
 # PID Files
 runsharp/PIDfiles/*
+
+# Log Files
+runsharp/logs/*
