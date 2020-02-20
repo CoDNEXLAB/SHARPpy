@@ -171,13 +171,14 @@ class plotSpeed(backgroundSpeed):
         '''
         ## give different colors for different height values.
         ## these are consistent with the hodograph colors.
-        low_level_color = QtGui.QColor("#FF0000")
-        mid_level_color = QtGui.QColor("#00FF00")
-        upper_level_color = QtGui.QColor("#FFFF00")
-        trop_level_color = QtGui.QColor("#00FFFF")
+        color_0_1000 = QtGui.QColor("#FF00FF")
+        color_1000_3000 = QtGui.QColor("#FF0000")
+        color_3000_6000 = QtGui.QColor("#00FF00")
+        color_6000_9000 = QtGui.QColor("#FFFF00")
+        color_9000_above = QtGui.QColor("#00FFFF")
         ## initialize a pen starting with the low level color,
         ## thickness of 2, solid line.
-        pen = QtGui.QPen(low_level_color, 1)
+        pen = QtGui.QPen(color_0_1000, 1)
         pen.setStyle(QtCore.Qt.SolidLine)
         ## if there are missing values, get the data mask
         try:
@@ -207,14 +208,16 @@ class plotSpeed(backgroundSpeed):
             x1 = self.speed_to_pix(spd1)
             y1 = self.pres_to_pix(p1)
             ## now color code the different heights
-            if hgt1 < 3000:
-                pen = QtGui.QPen(low_level_color, 2)
+            if hgt1 < 1000:
+                pen = QtGui.QPen(color_0_1000, 2)
+            elif hgt1 < 3000:
+                pen = QtGui.QPen(color_1000_3000, 2)
             elif hgt1 < 6000:
-                pen = QtGui.QPen(mid_level_color, 2)
+                pen = QtGui.QPen(color_3000_6000, 2)
             elif hgt1 < 9000:
-                pen = QtGui.QPen(upper_level_color, 2)
+                pen = QtGui.QPen(color_6000_9000, 2)
             else:
-                pen = QtGui.QPen(trop_level_color, 2)
+                pen = QtGui.QPen(color_9000_above, 2)
             ## Draw a horizontal line with the length of the wind speed
             qp.setPen(pen)
             qp.drawLine(0, y1, x1, y1)
