@@ -24,11 +24,17 @@ set fileSharp = ${baseDir}/${stn}.sharppy.${dateStr}.${vhr}.png
 # Just make sure our destination directory exists:
 mkdir -p $baseDir
 
-/home/ldm/anaconda/envs/sharppy/bin/python /home/scripts/sharppy/SHARPpy/runsharp/cod_gui.py $file $pidFil Observed $configFile &
+# Debug info:
+# echo $file
+# echo $pidFil
+# echo $configFile
+rm $pidFil
+
+/home/ldm/anaconda/envs/sharppy/bin/python /home/scripts/sharppy/SHARPpy/runsharp/cod_gui2.py $file $pidFil Observed $configFile &
 
 @ counter = 0
 set success = "false"
-while ($counter < 120)
+while ($counter < 20)
 	if (-f $pidFil) then
 		set pid = `awk '{if (NR==1) print}' ${pidFil}`
 		set success = "true"
@@ -53,7 +59,11 @@ if ($success == "false") then
 	exit
 endif
 
-import -window root -crop 1180x780+0+20 $fileSharp
-rm $pidFil
+echo $pid
+if ($pid != "FAIL") then
+	echo "Capping"
+	import -window root -crop 1180x780+0+20 $fileSharp
+	kill $pid
+endif
 
-kill $pid
+rm $pidFil

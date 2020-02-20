@@ -42,7 +42,7 @@ if frozenutils.isFrozen():
     sys.stdout = outfile
     sys.stderr = outfile
     
-from sharppy.viz.SPCWindow import SPCWindow
+from sharppy.viz.SPCWindow import SPCWindow as SPCWindowOrig
 from sharppy.viz.map import MapWidget 
 import sharppy.sharptab.profile as profile
 from sharppy.io.decoder import getDecoders
@@ -60,6 +60,20 @@ from os.path import expanduser
 import ConfigParser
 import traceback
 from functools import wraps, partial
+
+
+class SPCWindow(SPCWindowOrig):
+    """Hyjacking to override error handling (we crash like men)"""
+
+    def abortProfileAdd(self, menu_name, exc):
+        print(exc[1])
+
+        # We're done here, write the pid so we can be killed off:
+        pidFile = open(pidFilename, "w")
+        pidFile.write("FAIL")
+        pidFile.close
+        sys.exit(1)
+
 
 class crasher(object):
     def __init__(self, **kwargs):
@@ -521,6 +535,12 @@ class Picker(QWidget):
                 continue
 
         if dec is None:
+            # We're done here, write the pid so we can be killed off:
+            pidFile = open(pidFilename, "w")
+            pidFile.write("FAIL")
+            pidFile.close
+            sys.exit(1)
+
             raise IOError("Could not figure out the format of '%s'!" % filename)
 
         profs = dec.getProfiles()
@@ -694,7 +714,7 @@ class Main(QMainWindow):
         self.picker.skewApp(filename=filename)
 
 def main():
-    @crasher(exit=True)
+    # @crasher(exit=True)
     def createWindow():
         return Main()
 

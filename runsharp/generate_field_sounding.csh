@@ -13,7 +13,7 @@ endif
 
 # set file = $1
 set baseDir = /home/apache/climate/data/forecast/sndgs
-set pidFil = ${dateStr}_${loc}_pid.txt
+set pidFil = /home/scripts/sharppy/SHARPpy/runsharp/PIDfiles/${dateStr}_${loc}_pid.txt
 set file = /home/apache/climate/sonde/submitted/${dateStr}.${loc}.txt
 
 set fileSharp = ${baseDir}/${dateStr}_${loc}_${configFile}.png
@@ -22,7 +22,7 @@ set fileSharp = ${baseDir}/${dateStr}_${loc}_${configFile}.png
 
 @ counter = 0
 set success = "false"
-while ($counter < 120)
+while ($counter < 60)
 	if (-f $pidFil) then
 		set pid = `awk '{if (NR==1) print}' ${pidFil}`
 		set success = "true"

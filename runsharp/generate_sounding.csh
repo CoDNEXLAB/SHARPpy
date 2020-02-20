@@ -38,6 +38,7 @@ else
 	set textMod = $mod
 endif
 set textVhr = `echo ${vhr} | cut -c9-10`
+echo "/usr/local/wxp/bin-20131106-OLD/grbsnd -me=fi:${textFileTemp} -if=grib_${textMod}:x=${fhr} -cf=/home/scripts/wxpsnd/sao.cty -mo=${textMod} -cu=la -ho=${textVhr} -ft=${fhr} -id=${loc} -pl=none; mv -f ${textFileTemp} ${textFile}"
 /usr/local/wxp/bin-20131106-OLD/grbsnd -me=fi:${textFileTemp} -if=grib_${textMod}:x=${fhr} -cf=/home/scripts/wxpsnd/sao.cty -mo=${textMod} -cu=la -ho=${textVhr} -ft=${fhr} -id=${loc} -pl=none; mv -f ${textFileTemp} ${textFile} &
 
 # Stupid Alaska:
@@ -52,6 +53,11 @@ endif
 
 echo "$vhr $mod $fhr $loc" > $file
 
+echo $file
+echo $pidFil
+echo $mod
+echo $configFile
+
 /home/ldm/anaconda/envs/sharppy/bin/python /home/scripts/sharppy/SHARPpy/runsharp/cod_gui.py $file $pidFil $mod $configFile &
 
 @ counter = 0
@@ -59,7 +65,9 @@ set success = "false"
 while ($counter < 120)
 	if (-f $pidFil) then
 		set pid = `awk '{if (NR==1) print}' ${pidFil}`
-		set success = "true"
+		if ($pid != "FAIL") then
+			set success = "true"
+		endif
 		break
 	endif
 	sleep .5
